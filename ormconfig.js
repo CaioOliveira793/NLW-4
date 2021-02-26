@@ -1,7 +1,28 @@
 const commonDevelopmentConfig = {
-	synchronize: true,
+	logging: true,
+	synchronize: false,
 	entities: [
-		'./src/schemas/*.entity{.ts,.js}'
+		'./dist/src/entities/*.entity{.ts,.js}'
+	],
+	entitySchemas: [
+		'./dist/src/schemas/*.schema{.ts,.js}'
+	],
+	migrations: [
+		'./dist/src/database/migrations/*'
+	],
+	cli: {
+		entitiesDir: './src/entities',
+		migrationsDir: './src/database/migrations',
+	}
+};
+
+
+const cliConfig = {
+	type: 'sqlite',
+	database: './src/database/data.sqlite',
+	logging: true,
+	entities: [
+		'./src/entities/*.entity{.ts,.js}'
 	],
 	entitySchemas: [
 		'./src/schemas/*.schema{.ts,.js}'
@@ -14,7 +35,6 @@ const commonDevelopmentConfig = {
 		migrationsDir: './src/database/migrations',
 	}
 }
-
 
 const developmentConfig = {
 	...commonDevelopmentConfig,
@@ -30,12 +50,23 @@ const dockerDevelopmentConfig = {
 	username: process.env.POSTGRES_USER,
 	password: process.env.POSTGRES_PASSWORD,
 	database: process.env.POSTGRES_DB,
-	logNotifications: true,
 	migrationsRun: true,
 }
 
 
+let exportedConfig;
 
-module.exports = (process.env.NODE_ENV === 'docker_development') ?
-	dockerDevelopmentConfig :
-	developmentConfig;
+switch (process.env.NODE_ENV) {
+	case 'docker_development':
+		exportedConfig = dockerDevelopmentConfig;
+		break;
+
+	case 'cli':
+		exportedConfig = cliConfig;
+		break;
+
+	default:
+		exportedConfig = developmentConfig;
+}
+
+module.exports = exportedConfig;

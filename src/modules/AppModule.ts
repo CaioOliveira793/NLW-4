@@ -8,6 +8,7 @@ import { CreateUserUseCase } from 'src/useCases/createUser/CreateUserUseCase';
 import { SurveyController } from 'src/controllers/survey/SurveyController';
 import { surveyRepository } from 'src/repositories/SurveyRepository';
 import { CreateSurveyUseCase } from 'src/useCases/createSurvey/CreateSurveyUseCase';
+import { ListSurveysUseCase } from 'src/useCases/listSurveys/ListSurveysUseCase';
 
 @Module({
   imports: [DatabaseModule],
@@ -16,7 +17,8 @@ import { CreateSurveyUseCase } from 'src/useCases/createSurvey/CreateSurveyUseCa
     userRepository,
     CreateUserUseCase,
     surveyRepository,
-    CreateSurveyUseCase
+    CreateSurveyUseCase,
+    ListSurveysUseCase
   ],
 })
 export class AppModule {}

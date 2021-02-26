@@ -10,7 +10,7 @@ export class UserController {
 	) {}
 
 	@Post()
-	@HttpCode(204)
+	@HttpCode(201)
 	async createUser(@Body() data: CreateUserRequestDTO): Promise<User> {
 		try {
 			return await this.createUserUseCase.execute(data);

@@ -1,3 +1,13 @@
+const cli = {
+	entitiesDir: './src/entities',
+	migrationsDir: './src/database/migrations',
+}
+
+const sqliteDatabase = {
+	type: 'sqlite',
+	database: './src/database/data.sqlite',
+}
+
 const commonDevelopmentConfig = {
 	logging: true,
 	synchronize: false,
@@ -10,16 +20,11 @@ const commonDevelopmentConfig = {
 	migrations: [
 		'./dist/src/database/migrations/*'
 	],
-	cli: {
-		entitiesDir: './src/entities',
-		migrationsDir: './src/database/migrations',
-	}
+	cli
 };
 
-
 const cliConfig = {
-	type: 'sqlite',
-	database: './src/database/data.sqlite',
+	...sqliteDatabase,
 	logging: true,
 	entities: [
 		'./src/entities/*.entity{.ts,.js}'
@@ -30,26 +35,38 @@ const cliConfig = {
 	migrations: [
 		'./src/database/migrations/*'
 	],
-	cli: {
-		entitiesDir: './src/entities',
-		migrationsDir: './src/database/migrations',
-	}
+	cli
+};
+
+const testConfig = {
+	type: 'sqlite',
+	database: ':memory:',
+	logging: true,
+	entities: [
+		'./src/entities/*.entity{.ts,.js}'
+	],
+	entitySchemas: [
+		'./src/schemas/*.schema{.ts,.js}'
+	],
+	migrations: [
+		'./src/database/migrations/*'
+	],
+	cli
 }
 
 const developmentConfig = {
 	...commonDevelopmentConfig,
-	type: 'sqlite',
-	database: './src/database/data.sqlite',
+	...sqliteDatabase
 }
 
 const dockerDevelopmentConfig = {
 	...commonDevelopmentConfig,
 	type: 'postgres',
-	host: process.env.POSTGRES_HOST,
-	port: process.env.POSTGRES_PORT,
-	username: process.env.POSTGRES_USER,
-	password: process.env.POSTGRES_PASSWORD,
-	database: process.env.POSTGRES_DB,
+	host: 'postgresdb_service',
+	port: 5432,
+	username: 'postgres-user',
+	password: 'postgres-dev-pass',
+	database: 'development_db',
 	migrationsRun: true,
 }
 
@@ -63,6 +80,10 @@ switch (process.env.NODE_ENV) {
 
 	case 'cli':
 		exportedConfig = cliConfig;
+		break;
+
+	case 'test':
+		exportedConfig = testConfig;
 		break;
 
 	default:

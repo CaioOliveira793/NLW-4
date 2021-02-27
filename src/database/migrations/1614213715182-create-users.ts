@@ -29,7 +29,6 @@ export class createUsers1614213715182 implements MigrationInterface {
 					isUnique: true,
 				}, {
 					name: 'created_at',
-					// TODO: use 'timestamp with time zone'
 					type: 'timestamp with time zone',
 					isNullable: false,
 				}]

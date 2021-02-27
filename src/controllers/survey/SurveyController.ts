@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post } from "@nestjs/common";
-import { Survey } from "src/entities/Survey.entity";
-import { CreateSurveyUseCase, CreateSurveyRequestDTO } from "src/useCases/createSurvey/CreateSurveyUseCase";
-import { ListSurveysUseCase, ListSurveysRequestDTO } from "src/useCases/listSurveys/ListSurveysUseCase";
+import { Survey } from "../../entities/Survey.entity";
+import { CreateSurveyUseCase, CreateSurveyRequestDTO } from "../../useCases/createSurvey/CreateSurveyUseCase";
+import { ListSurveysUseCase, ListSurveysRequestDTO } from "../../useCases/listSurveys/ListSurveysUseCase";
 
 
 @Controller('/surveys')

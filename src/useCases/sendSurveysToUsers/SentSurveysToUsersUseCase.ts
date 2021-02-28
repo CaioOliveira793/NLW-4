@@ -1,14 +1,28 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
-import { User } from "src/entities/User.entity";
+import { compile } from 'handlebars';
+
+import { User } from "../../entities/User.entity";
 import { Survey } from "../../entities/Survey.entity";
-import { SurveyUser } from "src/entities/SurveyUser.entity";
+import { SurveyUser } from "../../entities/SurveyUser.entity";
+
 import { providers } from "../../constants";
-import { NodeMailerMailService } from "src/services/mail/NodeMailerMailService";
+import { NodeMailerMailService } from "../../services/mail/NodeMailerMailService";
+
+import NPSTemplateContent from '../../views/emails/npsMail';
 
 export interface SendSurveysToUsersRequestDTO {
 	surveyId: string
 	userIds: string[],
+}
+
+interface MailTemplateContext {
+	name: string;
+	title: string;
+	description: string;
+	link: string;
+	survey_user_id: string;
+	token: string;
 }
 
 
@@ -22,28 +36,51 @@ export class SendSurveysToUsersUseCase {
 		@Inject(providers.surveyUserRepository)
 		private readonly surveyUserRepository: Repository<SurveyUser>,
 		private readonly nodeMailerMailService: NodeMailerMailService,
-	) {}
+	) {
+		this.loadNPSMailTemplateParser();
+	}
+
+	private NPSMailTemplateParser!: HandlebarsTemplateDelegate<MailTemplateContext>;
+
+	private async loadNPSMailTemplateParser(): Promise<void> {
+		this.NPSMailTemplateParser = compile(NPSTemplateContent);
+	}
 
 	private async sendSurveyAndSaveSurveyUser(survey: Survey, user: User): Promise<SurveyUser> {
-		const surveyUser = new SurveyUser(survey.id, user.id);
+		let surveyUser = new SurveyUser(survey.id, user.id);
+		const userName = `${user.firstName} ${user.lastName}`;
 
 		try {
-			// send:
-			await this.nodeMailerMailService.sendMail({
-				from: {
-					name: 'My App',
-					address: 'noreplay@myapp.com'
-				},
-				to: {
-					name: `${user.firstName} ${user.lastName}`,
-					address: user.email
-				},
-				subject: survey.title,
-				body: survey.description
+			const body = this.NPSMailTemplateParser({
+				name: userName,
+				title: survey.title,
+				description: survey.description,
+				link: process.env.URL_MAIL as string,
+				survey_user_id: surveyUser.id,
+				token: user.id
 			});
 
-			// save:
-			await this.surveyUserRepository.insert(surveyUser);
+			await this.nodeMailerMailService.sendMail({
+				from: { name: 'My App', address: 'noreplay@myapp.com' },
+				to: { name: userName, address: user.email },
+				subject: survey.title,
+				body
+			});
+
+			const alreadyCreatedSurveyUser = await this.surveyUserRepository.findOne({
+				where: {
+					userId: surveyUser.userId,
+					surveyId: surveyUser.surveyId,
+				}
+			});
+
+			if (!alreadyCreatedSurveyUser) {
+				await this.surveyUserRepository.insert(surveyUser);
+			} else {
+				surveyUser = alreadyCreatedSurveyUser;
+			}
+			surveyUser.user = user;
+			surveyUser.survey = survey;
 		} catch (err) {
 			console.log(err);
 		}
@@ -61,8 +98,6 @@ export class SendSurveysToUsersUseCase {
 			const users = await this.userRepository.findByIds(data.userIds, {
 				select: ['id', 'firstName', 'lastName', 'email'],
 			});
-
-			console.log(users);
 
 			const surveyUsers = await Promise.all(users.map((user) => {
 				if (!user.id) {

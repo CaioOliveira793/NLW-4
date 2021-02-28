@@ -2,4 +2,5 @@ export const providers = {
 	databaseConnection: 'DATABASE_CONNECTION',
 	userRepository: 'USER_REPOSITORY',
 	surveyRepository: 'SURVEY_REPOSITORY',
+	surveyUserRepository: 'SURVEY_USER_REPOSITORY',
 }

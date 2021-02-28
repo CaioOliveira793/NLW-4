@@ -12,10 +12,10 @@ const commonDevelopmentConfig = {
 	logging: true,
 	synchronize: false,
 	entities: [
-		'./dist/src/entities/*.entity{.ts,.js}'
+		'./dist/src/entities/**/*.entity{.ts,.js}'
 	],
 	entitySchemas: [
-		'./dist/src/schemas/*.schema{.ts,.js}'
+		'./dist/src/schemas/**/*.schema{.ts,.js}'
 	],
 	migrations: [
 		'./dist/src/database/migrations/*'
@@ -27,10 +27,10 @@ const cliConfig = {
 	...sqliteDatabase,
 	logging: true,
 	entities: [
-		'./src/entities/*.entity{.ts,.js}'
+		'./src/entities/**/*.entity{.ts,.js}'
 	],
 	entitySchemas: [
-		'./src/schemas/*.schema{.ts,.js}'
+		'./src/schemas/**/*.schema{.ts,.js}'
 	],
 	migrations: [
 		'./src/database/migrations/*'
@@ -43,10 +43,10 @@ const testConfig = {
 	database: ':memory:',
 	logging: true,
 	entities: [
-		'./src/entities/*.entity{.ts,.js}'
+		'./src/entities/**/*.entity{.ts,.js}'
 	],
 	entitySchemas: [
-		'./src/schemas/*.schema{.ts,.js}'
+		'./src/schemas/**/*.schema{.ts,.js}'
 	],
 	migrations: [
 		'./src/database/migrations/*'

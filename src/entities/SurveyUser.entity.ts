@@ -1,15 +1,17 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
 import { v4 as uuidv4 } from 'uuid';
 
-@Entity('surveys')
-export class Survey {
+@Entity('surveys_users')
+export class SurveyUser {
 	constructor(
-		title: string,
-		description: string,
+		surveyId: string,
+		userId: string,
+		answer?: number,
 	) {
 		this.id = uuidv4();
-		this.title = title;
-		this.description = description;
+		this.userId = userId;
+		this.surveyId = surveyId;
+		this.answer = answer;
 		this.createdAt = new Date().toISOString();
 	}
 
@@ -24,20 +26,25 @@ export class Survey {
 	public readonly id: string;
 
 	@Column({
-		name: 'title',
-		type: 'varchar',
-		length: 30,
+		name: 'user_id',
+		type: 'uuid',
 		nullable: false,
 	})
-	public title: string;
+	public userId: string;
 
 	@Column({
-		name: 'description',
-		type: 'varchar',
-		length: 512,
+		name: 'survey_id',
+		type: 'uuid',
 		nullable: false,
 	})
-	public description: string;
+	public surveyId: string;
+
+	@Column({
+		name: 'answer',
+		type: 'int2',
+		nullable: true,
+	})
+	public answer?: number;
 
 	@CreateDateColumn({
 		name: 'created_at',

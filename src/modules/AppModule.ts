@@ -10,15 +10,22 @@ import { surveyRepository } from '../repositories/SurveyRepository';
 import { CreateSurveyUseCase } from '../useCases/createSurvey/CreateSurveyUseCase';
 import { ListSurveysUseCase } from '../useCases/listSurveys/ListSurveysUseCase';
 
+import { SendSurveysToUsersUseCase } from 'src/useCases/sendSurveysToUsers/SentSurveysToUsersUseCase';
+import { surveyUserRepository } from 'src/repositories/SurveyUserRepository';
+import { NodeMailerMailService } from 'src/services/mail/NodeMailerMailService';
+
 @Module({
   imports: [DatabaseModule],
   controllers: [UserController, SurveyController],
   providers: [
     userRepository,
-    CreateUserUseCase,
     surveyRepository,
+    surveyUserRepository,
+    CreateUserUseCase,
     CreateSurveyUseCase,
-    ListSurveysUseCase
+    ListSurveysUseCase,
+    SendSurveysToUsersUseCase,
+    NodeMailerMailService
   ],
 })
 export class AppModule {}

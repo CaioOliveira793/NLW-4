@@ -58,5 +58,5 @@ export class User {
 		generated: false,
 		nullable: false,
 	})
-	public createdAt: string;
+	public readonly createdAt: string;
 }

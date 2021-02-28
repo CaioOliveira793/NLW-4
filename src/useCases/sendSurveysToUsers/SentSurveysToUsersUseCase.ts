@@ -50,16 +50,16 @@ export class SendSurveysToUsersUseCase {
 		let surveyUser = new SurveyUser(survey.id, user.id);
 		const userName = `${user.firstName} ${user.lastName}`;
 
-		try {
-			const body = this.NPSMailTemplateParser({
-				name: userName,
-				title: survey.title,
-				description: survey.description,
-				link: process.env.URL_MAIL as string,
-				survey_user_id: surveyUser.id,
-				token: user.id
-			});
+		const body = this.NPSMailTemplateParser({
+			name: userName,
+			title: survey.title,
+			description: survey.description,
+			link: process.env.URL_MAIL as string,
+			survey_user_id: surveyUser.id,
+			token: user.id
+		});
 
+		try {
 			await this.nodeMailerMailService.sendMail({
 				from: { name: 'My App', address: 'noreplay@myapp.com' },
 				to: { name: userName, address: user.email },

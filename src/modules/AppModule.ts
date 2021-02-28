@@ -15,6 +15,7 @@ import { NodeMailerMailService } from 'src/services/mail/NodeMailerMailService';
 
 import { AnswerController } from 'src/controllers/answer/AnswerController';
 import { CreateAnswerUseCase } from 'src/useCases/createAnswer/CreateAnswerUseCase';
+import { CalculateNPSUseCase } from 'src/useCases/calculateNPS/CalculateNPSUseCase';
 
 @Module({
   imports: [DatabaseModule],
@@ -28,6 +29,7 @@ import { CreateAnswerUseCase } from 'src/useCases/createAnswer/CreateAnswerUseCa
     ListSurveysUseCase,
     SendSurveysToUsersUseCase,
     CreateAnswerUseCase,
+    CalculateNPSUseCase,
     NodeMailerMailService,
   ],
 })

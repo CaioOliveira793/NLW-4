@@ -17,14 +17,9 @@ export class CreateSurveyUseCase {
 	) {}
 
 	public async execute(data: CreateSurveyRequestDTO): Promise<Survey> {
-		try {
-			const survey = new Survey(data.title, data.description);
-
-			await this.surveyRepository.insert(survey);
-			return survey;
-		} catch (err) {
-			throw new Error('Unknown error');
-		}
+		const survey = new Survey(data.title, data.description);
+		await this.surveyRepository.insert(survey);
+		return survey;
 	}
 
 }

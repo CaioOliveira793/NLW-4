@@ -17,12 +17,8 @@ export class ListSurveysUseCase {
 	) {}
 
 	public async execute(data: ListSurveysRequestDTO): Promise<Survey[]> {
-		try {
-			const surveys = await this.surveyRepository.find({ where: data });
-			return surveys;
-		} catch (err) {
-			throw new Error('Unknown error');
-		}
+		// FIXME: fix survey query
+		return await this.surveyRepository.find({ where: data });
 	}
 
 }

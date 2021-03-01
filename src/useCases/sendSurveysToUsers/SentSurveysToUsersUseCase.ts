@@ -9,6 +9,8 @@ import { SurveyUser } from "../../entities/SurveyUser.entity";
 import { providers } from "../../constants";
 import { NodeMailerMailService } from "../../services/mail/NodeMailerMailService";
 
+import { NotFoundException } from '../../exceptions/resource/NotFountException';
+
 import NPSTemplateContent from '../../views/emails/npsMail';
 
 export interface SendSurveysToUsersRequestDTO {
@@ -42,7 +44,7 @@ export class SendSurveysToUsersUseCase {
 
 	private NPSMailTemplateParser!: HandlebarsTemplateDelegate<MailTemplateContext>;
 
-	private async loadNPSMailTemplateParser(): Promise<void> {
+	private loadNPSMailTemplateParser(): void {
 		this.NPSMailTemplateParser = compile(NPSTemplateContent);
 	}
 
@@ -59,57 +61,54 @@ export class SendSurveysToUsersUseCase {
 			token: user.id
 		});
 
-		try {
-			await this.nodeMailerMailService.sendMail({
-				from: { name: 'My App', address: 'noreplay@myapp.com' },
-				to: { name: userName, address: user.email },
-				subject: survey.title,
-				body
-			});
+		await this.nodeMailerMailService.sendMail({
+			from: { name: 'My App', address: 'noreplay@myapp.com' },
+			to: { name: userName, address: user.email },
+			subject: survey.title,
+			body
+		});
 
-			const alreadyCreatedSurveyUser = await this.surveyUserRepository.findOne({
-				where: {
-					userId: surveyUser.userId,
-					surveyId: surveyUser.surveyId,
-				}
-			});
-
-			if (!alreadyCreatedSurveyUser) {
-				await this.surveyUserRepository.insert(surveyUser);
-			} else {
-				surveyUser = alreadyCreatedSurveyUser;
+		const alreadyCreatedSurveyUser = await this.surveyUserRepository.findOne({
+			where: {
+				userId: surveyUser.userId,
+				surveyId: surveyUser.surveyId,
 			}
-			surveyUser.user = user;
-			surveyUser.survey = survey;
-		} catch (err) {
-			console.log(err);
-		}
+		});
 
+		if (!alreadyCreatedSurveyUser) {
+			await this.surveyUserRepository.insert(surveyUser);
+		} else {
+			surveyUser = alreadyCreatedSurveyUser;
+		}
+		surveyUser.user = user;
+		surveyUser.survey = survey;
 		return surveyUser;
 	}
 
 	public async execute(data: SendSurveysToUsersRequestDTO): Promise<SurveyUser[]> {
-		try {
-			const survey = await this.surveyRepository.findOne(data.surveyId);
-			if (!survey) {
-				throw new Error(`Survey with id ${data.surveyId} does not exists`);
-			}
-
-			const users = await this.userRepository.findByIds(data.userIds, {
-				select: ['id', 'firstName', 'lastName', 'email'],
-			});
-
-			const surveyUsers = await Promise.all(users.map((user) => {
-				if (!user.id) {
-					throw new Error(`User with id ${data.surveyId} does not exists`);
-				}
-				return this.sendSurveyAndSaveSurveyUser(survey, user);
-			}));
-
-			return surveyUsers;
-		} catch (err) {
-			throw new Error('Unknown error');
+		const survey = await this.surveyRepository.findOne(data.surveyId);
+		if (!survey) {
+			throw new NotFoundException(
+				`Survey with id ${data.surveyId} does not exists`,
+				`Survey with id ${data.surveyId} does not exists, try to create a survey to send to users`
+			);
 		}
+
+		const users = await this.userRepository.findByIds(data.userIds, {
+			select: ['id', 'firstName', 'lastName', 'email'],
+		});
+
+		const surveyUsers = await Promise.all(users.map((user) => {
+			if (!user.id) {
+				throw new NotFoundException(
+					`User with id ${data.surveyId} does not exists`,
+					`User with id ${data.surveyId} does not exists, try to send the survey to an existing users`
+				);
+			}
+			return this.sendSurveyAndSaveSurveyUser(survey, user);
+		}));
+
+		return surveyUsers;
 	}
 
 }

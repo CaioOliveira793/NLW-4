@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { User } from '../../entities/User.entity';
 import { CreateUserRequestDTO, CreateUserUseCase } from '../../useCases/createUser/CreateUserUseCase';
 
@@ -12,23 +12,6 @@ export class UserController {
 	@Post()
 	@HttpCode(201)
 	async createUser(@Body() data: CreateUserRequestDTO): Promise<User> {
-		try {
-			return await this.createUserUseCase.execute(data);
-
-		} catch (err) {
-			switch (err.type) {
-				case 'ALREADY_EXISTS':
-					throw new HttpException({
-						status: HttpStatus.BAD_REQUEST,
-						error: err.message,
-					}, HttpStatus.BAD_REQUEST);
-
-				default:
-					throw new HttpException({
-						status: HttpStatus.INTERNAL_SERVER_ERROR,
-						error: err ?? 'Unknown error',
-					}, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+		return await this.createUserUseCase.execute(data);
 	}
 }

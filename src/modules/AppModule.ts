@@ -17,6 +17,8 @@ import { AnswerController } from 'src/controllers/answer/AnswerController';
 import { CreateAnswerUseCase } from 'src/useCases/createAnswer/CreateAnswerUseCase';
 import { CalculateNPSUseCase } from 'src/useCases/calculateNPS/CalculateNPSUseCase';
 
+import { globalExceptionFilterProvider } from 'src/exceptions/filters/GlobalExceptionFilter';
+
 @Module({
   imports: [DatabaseModule],
   controllers: [UserController, SurveyController, AnswerController],
@@ -31,6 +33,7 @@ import { CalculateNPSUseCase } from 'src/useCases/calculateNPS/CalculateNPSUseCa
     CreateAnswerUseCase,
     CalculateNPSUseCase,
     NodeMailerMailService,
+    globalExceptionFilterProvider
   ],
 })
 export class AppModule {}

@@ -3,6 +3,8 @@ import { Between, Repository } from "typeorm";
 import { SurveyUser } from "../../entities/SurveyUser.entity";
 import { providers } from "../../constants";
 import { Survey } from "src/entities/Survey.entity";
+import { NotFoundException } from "src/exceptions/resource/NotFountException";
+import { ConflictException } from "src/exceptions/resource/ConflictException";
 
 
 export interface CalculateNPSRequestDTO {
@@ -38,39 +40,41 @@ export class CalculateNPSUseCase {
 			});
 
 			if (!createdSurvey) {
-				throw new Error(`Survey with id ${surveyId} does not exists`);
+				throw new NotFoundException(
+					`Survey with id ${surveyId} does not exists`,
+					`Survey with id ${surveyId} does not exists, try to create a survey to send to users`
+				);
 			}
-			throw new Error(`Survey with id ${surveyId} was not sended to any User`);
+			throw new ConflictException(
+				`Survey with id ${surveyId} was not sended to any User`,
+				`Try to send the survey with id ${surveyId} to Users and resend the request`
+			);
 		}
 	}
 
 	public async execute(data: CalculateNPSRequestDTO): Promise<CalculateNPSResponseDTO> {
 		await this.verifyAnswer(data.surveyId);
 
-		try {
-			const detractors = await this.surveyUserRepository.count({
-				where: { surveyId: data.surveyId, answer: Between(0, 6) }
-			});
+		const detractors = await this.surveyUserRepository.count({
+			where: { surveyId: data.surveyId, answer: Between(0, 6) }
+		});
 
-			const passive = await this.surveyUserRepository.count({
-				where: { surveyId: data.surveyId, answer: Between(7, 8) }
-			});
+		const passive = await this.surveyUserRepository.count({
+			where: { surveyId: data.surveyId, answer: Between(7, 8) }
+		});
 
-			const promoters = await this.surveyUserRepository.count({
-				where: { surveyId: data.surveyId, answer: Between(9, 10) }
-			});
+		const promoters = await this.surveyUserRepository.count({
+			where: { surveyId: data.surveyId, answer: Between(9, 10) }
+		});
 
-			const total = detractors + passive + promoters;
-			return {
-				detractors,
-				passive,
-				promoters,
-				percentage: (promoters - detractors) / total * 100,
-				total
-			};
-		} catch (err) {
-			throw new Error('Unknown error');
-		}
+		const total = detractors + passive + promoters;
+		return {
+			detractors,
+			passive,
+			promoters,
+			percentage: (promoters - detractors) / total * 100,
+			total
+		};
 	}
 
 }

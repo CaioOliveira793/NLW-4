@@ -1,8 +1,8 @@
-import { AppException } from '../ExceptionsInterface';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { AppException } from '../ExceptionsInterface';
 
 
-export class NotFoundException implements AppException {
+export class UnauthorizedException implements AppException {
 	private message: string;
 	private details: unknown;
 
@@ -13,9 +13,10 @@ export class NotFoundException implements AppException {
 
 	public getHTTPException(): HttpException {
 		return new HttpException({
-			status: HttpStatus.NOT_FOUND,
+			status: HttpStatus.UNAUTHORIZED,
 			message: this.message,
 			details: this.details,
-		}, HttpStatus.NOT_FOUND);
+		}, HttpStatus.UNAUTHORIZED);
 	}
+
 }

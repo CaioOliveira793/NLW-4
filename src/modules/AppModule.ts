@@ -14,7 +14,7 @@ import { surveyUserRepository } from 'src/repositories/SurveyUserRepository';
 import { NodeMailerMailService } from 'src/services/mail/NodeMailerMailService';
 
 import { AnswerController } from 'src/controllers/answer/AnswerController';
-import { CreateAnswerUseCase } from 'src/useCases/createAnswer/CreateAnswerUseCase';
+import { InsertAnswerUseCase } from 'src/useCases/insertAnswer/InsertAnswerUseCase';
 import { CalculateNPSUseCase } from 'src/useCases/calculateNPS/CalculateNPSUseCase';
 
 import { globalExceptionFilterProvider } from 'src/exceptions/filters/GlobalExceptionFilter';
@@ -30,7 +30,7 @@ import { globalExceptionFilterProvider } from 'src/exceptions/filters/GlobalExce
     CreateSurveyUseCase,
     ListSurveysUseCase,
     SendSurveysToUsersUseCase,
-    CreateAnswerUseCase,
+    InsertAnswerUseCase,
     CalculateNPSUseCase,
     NodeMailerMailService,
     globalExceptionFilterProvider

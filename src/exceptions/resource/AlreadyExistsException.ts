@@ -6,7 +6,7 @@ export class AlreadyExistsException implements AppException {
 	private message: string;
 	private details: unknown;
 
-	constructor(message: string, details: unknown) {
+	constructor(message: string, details?: unknown) {
 		this.message = message;
 		this.details = details;
 	}

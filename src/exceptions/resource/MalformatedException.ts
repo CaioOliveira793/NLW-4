@@ -2,7 +2,7 @@ import { AppException } from '../ExceptionsInterface';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 
-export class NotFoundException implements AppException {
+export class MalformatedException implements AppException {
 	private message: string;
 	private details: unknown;
 
@@ -13,9 +13,9 @@ export class NotFoundException implements AppException {
 
 	public getHTTPException(): HttpException {
 		return new HttpException({
-			status: HttpStatus.NOT_FOUND,
+			status: HttpStatus.BAD_REQUEST,
 			message: this.message,
 			details: this.details,
-		}, HttpStatus.NOT_FOUND);
+		}, HttpStatus.BAD_REQUEST);
 	}
 }

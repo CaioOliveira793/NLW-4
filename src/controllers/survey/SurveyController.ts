@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpCode, Post } from "@nestjs/common";
 import { Survey } from "../../entities/Survey.entity";
-import { SurveyUser } from "src/entities/SurveyUser.entity";
+import { Answers } from "src/entities/Answers.entity";
 import { CreateSurveyUseCase, CreateSurveyRequestDTO } from "../../useCases/createSurvey/CreateSurveyUseCase";
 import { ListSurveysUseCase, ListSurveysRequestDTO } from "../../useCases/listSurveys/ListSurveysUseCase";
 import { SendSurveysToUsersUseCase, SendSurveysToUsersRequestDTO } from "../../useCases/sendSurveysToUsers/SentSurveysToUsersUseCase";
@@ -26,7 +26,7 @@ export class SurveyController {
 	}
 
 	@Post('/send')
-	async sendSurvey(@Body() data: SendSurveysToUsersRequestDTO): Promise<SurveyUser[]> {
+	async sendSurvey(@Body() data: SendSurveysToUsersRequestDTO): Promise<Answers[]> {
 		return await this.sendSurveysToUsersUseCase.execute(data);
 	}
 }

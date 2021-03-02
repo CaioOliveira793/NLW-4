@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { DatabaseModule } from './DatabaseModule';
 
 import { AnswerController } from 'src/controllers/answer/AnswerController';
-import { surveyUserRepository } from 'src/repositories/SurveyUserRepository';
+import { answerRepository } from 'src/repositories/AnswerRepository';
 
 
 import { globalExceptionFilterProvider } from 'src/exceptions/filters/GlobalExceptionFilter';
@@ -17,11 +17,11 @@ import { surveyRepository } from 'src/repositories/SurveyRepository';
 	controllers: [AnswerController],
 	providers: [
 		surveyRepository,
-		surveyUserRepository,
+		answerRepository,
 		InsertAnswerUseCase,
 		CalculateNPSUseCase,
 		globalExceptionFilterProvider
 	],
-	exports: [surveyUserRepository]
+	exports: [answerRepository]
 })
 export class AnswerModule {}

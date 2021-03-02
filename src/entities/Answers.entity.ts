@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { Survey } from "./Survey.entity";
 import { User } from "./User.entity";
 
-@Entity('surveys_users')
-export class SurveyUser {
+@Entity('answers')
+export class Answers {
 	constructor(
 		surveyId: string,
 		userId: string,

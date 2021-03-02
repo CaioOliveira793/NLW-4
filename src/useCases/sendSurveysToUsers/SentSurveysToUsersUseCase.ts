@@ -4,7 +4,7 @@ import { compile } from 'handlebars';
 
 import { User } from "../../entities/User.entity";
 import { Survey } from "../../entities/Survey.entity";
-import { SurveyUser } from "../../entities/SurveyUser.entity";
+import { Answers } from "../../entities/Answers.entity";
 
 import { providers } from "../../constants";
 import { NodeMailerMailService } from "../../services/mail/NodeMailerMailService";
@@ -23,7 +23,7 @@ interface MailTemplateContext {
 	title: string;
 	description: string;
 	link: string;
-	survey_user_id: string;
+	answer_id: string;
 	token: string;
 }
 
@@ -35,8 +35,8 @@ export class SendSurveysToUsersUseCase {
 		private readonly surveyRepository: Repository<Survey>,
 		@Inject(providers.userRepository)
 		private readonly userRepository: Repository<User>,
-		@Inject(providers.surveyUserRepository)
-		private readonly surveyUserRepository: Repository<SurveyUser>,
+		@Inject(providers.answerRepository)
+		private readonly answerRepository: Repository<Answers>,
 		private readonly nodeMailerMailService: NodeMailerMailService,
 	) {
 		this.loadNPSMailTemplateParser();
@@ -48,8 +48,8 @@ export class SendSurveysToUsersUseCase {
 		this.NPSMailTemplateParser = compile(NPSTemplateContent);
 	}
 
-	private async sendSurveyAndSaveSurveyUser(survey: Survey, user: User): Promise<SurveyUser> {
-		let surveyUser = new SurveyUser(survey.id, user.id);
+	private async sendSurveyAndSaveAnswer(survey: Survey, user: User): Promise<Answers> {
+		let answer = new Answers(survey.id, user.id);
 		const userName = `${user.firstName} ${user.lastName}`;
 
 		const body = this.NPSMailTemplateParser({
@@ -57,7 +57,7 @@ export class SendSurveysToUsersUseCase {
 			title: survey.title,
 			description: survey.description,
 			link: process.env.URL_MAIL as string,
-			survey_user_id: surveyUser.id,
+			answer_id: answer.id,
 			token: user.id
 		});
 
@@ -68,24 +68,24 @@ export class SendSurveysToUsersUseCase {
 			body
 		});
 
-		const alreadyCreatedSurveyUser = await this.surveyUserRepository.findOne({
+		const alreadyCreatedSurveyUser = await this.answerRepository.findOne({
 			where: {
-				userId: surveyUser.userId,
-				surveyId: surveyUser.surveyId,
+				userId: answer.userId,
+				surveyId: answer.surveyId,
 			}
 		});
 
 		if (!alreadyCreatedSurveyUser) {
-			await this.surveyUserRepository.insert(surveyUser);
+			await this.answerRepository.insert(answer);
 		} else {
-			surveyUser = alreadyCreatedSurveyUser;
+			answer = alreadyCreatedSurveyUser;
 		}
-		surveyUser.user = user;
-		surveyUser.survey = survey;
-		return surveyUser;
+		answer.user = user;
+		answer.survey = survey;
+		return answer;
 	}
 
-	public async execute(data: SendSurveysToUsersRequestDTO): Promise<SurveyUser[]> {
+	public async execute(data: SendSurveysToUsersRequestDTO): Promise<Answers[]> {
 		const survey = await this.surveyRepository.findOne(data.surveyId);
 		if (!survey) {
 			throw new NotFoundException(
@@ -98,17 +98,17 @@ export class SendSurveysToUsersUseCase {
 			select: ['id', 'firstName', 'lastName', 'email'],
 		});
 
-		const surveyUsers = await Promise.all(users.map((user) => {
+		const answer = await Promise.all(users.map((user) => {
 			if (!user.id) {
 				throw new NotFoundException(
 					`User with id ${data.surveyId} does not exists`,
 					`User with id ${data.surveyId} does not exists, try to send the survey to an existing users`
 				);
 			}
-			return this.sendSurveyAndSaveSurveyUser(survey, user);
+			return this.sendSurveyAndSaveAnswer(survey, user);
 		}));
 
-		return surveyUsers;
+		return answer;
 	}
 
 }

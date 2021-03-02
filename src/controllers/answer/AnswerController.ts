@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
 import { InsertAnswerUseCase } from '../../useCases/insertAnswer/InsertAnswerUseCase';
-import { SurveyUser } from '../../entities/SurveyUser.entity';
+import { Answers } from '../../entities/Answers.entity';
 import { CalculateNPSUseCase, CalculateNPSResponseDTO } from '../../useCases/calculateNPS/CalculateNPSUseCase';
 
 interface CreateAnsewerQuery {
@@ -18,9 +18,9 @@ export class AnswerController {
 
 	@Post(':id')
 	@HttpCode(201)
-	async createAnswer(@Param('id') id: string, @Query() query: CreateAnsewerQuery): Promise<SurveyUser> {
+	async createAnswer(@Param('id') id: string, @Query() query: CreateAnsewerQuery): Promise<Answers> {
 		return await this.createAnswerUseCase.execute({
-			surveyUserId: id,
+			answerId: id,
 			token: query.tk,
 			value: Number.parseInt(query.v),
 		});

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
-import { SurveyUser } from "../../entities/SurveyUser.entity";
+import { Answers } from "../../entities/Answers.entity";
 import { providers } from "../../constants";
 import { NotFoundException } from "src/exceptions/resource/NotFountException";
 import { UnauthorizedException } from "src/exceptions/permission/UnauthorizedException";
@@ -8,7 +8,7 @@ import { MalformatedException } from "src/exceptions/resource/MalformatedExcepti
 
 
 export interface InsertAnswerRequestDTO {
-	surveyUserId: string;
+	answerId: string;
 	token: string;
 	value: number;
 }
@@ -17,19 +17,19 @@ export interface InsertAnswerRequestDTO {
 @Injectable()
 export class InsertAnswerUseCase {
 	constructor(
-		@Inject(providers.surveyUserRepository)
-		private readonly surveyUserRepository: Repository<SurveyUser>,
+		@Inject(providers.answerRepository)
+		private readonly answerRepository: Repository<Answers>,
 	) {}
 
-	public async execute(data: InsertAnswerRequestDTO): Promise<SurveyUser> {
-		const surveyUser = await this.surveyUserRepository.findOne(data.surveyUserId);
+	public async execute(data: InsertAnswerRequestDTO): Promise<Answers> {
+		const answer = await this.answerRepository.findOne(data.answerId);
 
-		if (!surveyUser) {
+		if (!answer) {
 			throw new NotFoundException(
-				`SurveyUser with id ${data.surveyUserId} does not exists`
+				`Answer with id ${data.answerId} does not exists`
 			);
 		}
-		if (surveyUser.userId !== data.token) {
+		if (answer.userId !== data.token) {
 			throw new UnauthorizedException(`Token ${data.token} is not valid`);
 		}
 		if (data.value < 0 || data.value > 10) {
@@ -38,9 +38,9 @@ export class InsertAnswerUseCase {
 			);
 		}
 
-		surveyUser.answer = Math.floor(data.value);
-		this.surveyUserRepository.update({ id: surveyUser.id }, { answer: surveyUser.answer });
-		return surveyUser;
+		answer.answer = Math.floor(data.value);
+		this.answerRepository.update({ id: answer.id }, { answer: answer.answer });
+		return answer;
 	}
 
 }

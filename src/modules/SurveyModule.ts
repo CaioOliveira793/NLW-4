@@ -6,7 +6,7 @@ import { SurveyController } from 'src/controllers/survey/SurveyController';
 
 import { surveyRepository } from 'src/repositories/SurveyRepository';
 import { userRepository } from 'src/repositories/UserRepository';
-import { surveyUserRepository } from 'src/repositories/SurveyUserRepository';
+import { answerRepository } from 'src/repositories/AnswerRepository';
 
 import { CreateSurveyUseCase } from 'src/useCases/createSurvey/CreateSurveyUseCase';
 import { ListSurveysUseCase } from 'src/useCases/listSurveys/ListSurveysUseCase';
@@ -23,7 +23,7 @@ import { globalExceptionFilterProvider } from 'src/exceptions/filters/GlobalExce
 	providers: [
 		userRepository,
     surveyRepository,
-    surveyUserRepository,
+    answerRepository,
 		CreateSurveyUseCase,
 		ListSurveysUseCase,
 		SendSurveysToUsersUseCase,

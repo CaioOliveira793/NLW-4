@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Between, Repository } from "typeorm";
-import { SurveyUser } from "../../entities/SurveyUser.entity";
+import { Answers } from "../../entities/Answers.entity";
 import { providers } from "../../constants";
 import { Survey } from "src/entities/Survey.entity";
 import { NotFoundException } from "src/exceptions/resource/NotFountException";
@@ -23,14 +23,14 @@ export interface CalculateNPSResponseDTO {
 @Injectable()
 export class CalculateNPSUseCase {
 	constructor(
-		@Inject(providers.surveyUserRepository)
-		private readonly surveyUserRepository: Repository<SurveyUser>,
+		@Inject(providers.answerRepository)
+		private readonly answerRepository: Repository<Answers>,
 		@Inject(providers.surveyRepository)
 		private readonly surveyRepository: Repository<Survey>,
 	) {}
 
 	private async verifyAnswer(surveyId: string): Promise<void> {
-		const sendedSurvey = await this.surveyUserRepository.findOne({
+		const sendedSurvey = await this.answerRepository.findOne({
 			where: { surveyId: surveyId }
 		});
 
@@ -55,15 +55,15 @@ export class CalculateNPSUseCase {
 	public async execute(data: CalculateNPSRequestDTO): Promise<CalculateNPSResponseDTO> {
 		await this.verifyAnswer(data.surveyId);
 
-		const detractors = await this.surveyUserRepository.count({
+		const detractors = await this.answerRepository.count({
 			where: { surveyId: data.surveyId, answer: Between(0, 6) }
 		});
 
-		const passive = await this.surveyUserRepository.count({
+		const passive = await this.answerRepository.count({
 			where: { surveyId: data.surveyId, answer: Between(7, 8) }
 		});
 
-		const promoters = await this.surveyUserRepository.count({
+		const promoters = await this.answerRepository.count({
 			where: { surveyId: data.surveyId, answer: Between(9, 10) }
 		});
 

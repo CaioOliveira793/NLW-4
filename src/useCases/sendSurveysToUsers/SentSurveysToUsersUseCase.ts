@@ -7,7 +7,7 @@ import { Survey } from "../../entities/Survey.entity";
 import { Answers } from "../../entities/Answers.entity";
 
 import { providers } from "../../constants";
-import { NodeMailerMailService } from "../../services/mail/NodeMailerMailService";
+import { NodeMailerFakeMailService } from "../../services/mail/NodeMailerFakeMailService";
 
 import { NotFoundException } from '../../exceptions/resource/NotFountException';
 
@@ -37,7 +37,7 @@ export class SendSurveysToUsersUseCase {
 		private readonly userRepository: Repository<User>,
 		@Inject(providers.answerRepository)
 		private readonly answerRepository: Repository<Answers>,
-		private readonly nodeMailerMailService: NodeMailerMailService,
+		private readonly nodeMailerFakeMailService: NodeMailerFakeMailService,
 	) {
 		this.loadNPSMailTemplateParser();
 	}
@@ -61,7 +61,7 @@ export class SendSurveysToUsersUseCase {
 			token: user.id
 		});
 
-		await this.nodeMailerMailService.sendMail({
+		await this.nodeMailerFakeMailService.sendMail({
 			from: { name: 'My App', address: 'noreplay@myapp.com' },
 			to: { name: userName, address: user.email },
 			subject: survey.title,

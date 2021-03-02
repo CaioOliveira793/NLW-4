@@ -12,7 +12,7 @@ import { CreateSurveyUseCase } from 'src/useCases/createSurvey/CreateSurveyUseCa
 import { ListSurveysUseCase } from 'src/useCases/listSurveys/ListSurveysUseCase';
 import { SendSurveysToUsersUseCase } from 'src/useCases/sendSurveysToUsers/SentSurveysToUsersUseCase';
 
-import { NodeMailerMailService } from 'src/services/mail/NodeMailerMailService';
+import { NodeMailerFakeMailService } from 'src/services/mail/NodeMailerFakeMailService';
 
 import { globalExceptionFilterProvider } from 'src/exceptions/filters/GlobalExceptionFilter';
 
@@ -27,7 +27,7 @@ import { globalExceptionFilterProvider } from 'src/exceptions/filters/GlobalExce
 		CreateSurveyUseCase,
 		ListSurveysUseCase,
 		SendSurveysToUsersUseCase,
-		NodeMailerMailService,
+		NodeMailerFakeMailService,
 		globalExceptionFilterProvider
 	],
 	exports: [surveyRepository]

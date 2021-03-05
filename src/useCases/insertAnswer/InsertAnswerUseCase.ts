@@ -39,7 +39,7 @@ export class InsertAnswerUseCase {
 		}
 
 		answer.answer = Math.floor(data.value);
-		this.answerRepository.update({ id: answer.id }, { answer: answer.answer });
+		await this.answerRepository.update({ id: answer.id }, { answer: answer.answer });
 		return answer;
 	}
 

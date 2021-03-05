@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Between, Repository } from "typeorm";
-import { Answers } from "../../entities/Answers.entity";
+import { Answer } from "../../entities/Answers.entity";
 import { providers } from "../../constants";
 import { Survey } from "src/entities/Survey.entity";
 import { NotFoundException } from "src/exceptions/resource/NotFountException";
@@ -24,7 +24,7 @@ export interface CalculateNPSResponseDTO {
 export class CalculateNPSUseCase {
 	constructor(
 		@Inject(providers.answerRepository)
-		private readonly answerRepository: Repository<Answers>,
+		private readonly answerRepository: Repository<Answer>,
 		@Inject(providers.surveyRepository)
 		private readonly surveyRepository: Repository<Survey>,
 	) {}

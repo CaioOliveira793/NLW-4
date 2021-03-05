@@ -1,9 +1,9 @@
 import { Connection, Repository } from 'typeorm';
-import { Answers } from 'src/entities/Answers.entity';
+import { Answer } from 'src/entities/Answers.entity';
 import { providers } from '../constants';
 
 export const answerRepository = {
 	provide: providers.answerRepository,
-	useFactory: (connection: Connection): Repository<Answers> => connection.getRepository(Answers),
+	useFactory: (connection: Connection): Repository<Answer> => connection.getRepository(Answer),
 	inject: [providers.databaseConnection],
 };

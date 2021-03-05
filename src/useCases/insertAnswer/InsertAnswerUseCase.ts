@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
-import { Answers } from "../../entities/Answers.entity";
+import { Answer } from "../../entities/Answers.entity";
 import { providers } from "../../constants";
 import { NotFoundException } from "src/exceptions/resource/NotFountException";
 import { UnauthorizedException } from "src/exceptions/permission/UnauthorizedException";
@@ -18,10 +18,10 @@ export interface InsertAnswerRequestDTO {
 export class InsertAnswerUseCase {
 	constructor(
 		@Inject(providers.answerRepository)
-		private readonly answerRepository: Repository<Answers>,
+		private readonly answerRepository: Repository<Answer>,
 	) {}
 
-	public async execute(data: InsertAnswerRequestDTO): Promise<Answers> {
+	public async execute(data: InsertAnswerRequestDTO): Promise<Answer> {
 		const answer = await this.answerRepository.findOne(data.answerId);
 
 		if (!answer) {

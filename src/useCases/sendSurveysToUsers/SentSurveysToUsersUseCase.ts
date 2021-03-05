@@ -4,7 +4,7 @@ import { compile } from 'handlebars';
 
 import { User } from "../../entities/User.entity";
 import { Survey } from "../../entities/Survey.entity";
-import { Answers } from "../../entities/Answers.entity";
+import { Answer } from "../../entities/Answers.entity";
 
 import { providers } from "../../constants";
 import { NodeMailerFakeMailService } from "../../services/mail/NodeMailerFakeMailService";
@@ -36,7 +36,7 @@ export class SendSurveysToUsersUseCase {
 		@Inject(providers.userRepository)
 		private readonly userRepository: Repository<User>,
 		@Inject(providers.answerRepository)
-		private readonly answerRepository: Repository<Answers>,
+		private readonly answerRepository: Repository<Answer>,
 		private readonly nodeMailerFakeMailService: NodeMailerFakeMailService,
 	) {
 		this.loadNPSMailTemplateParser();
@@ -48,8 +48,8 @@ export class SendSurveysToUsersUseCase {
 		this.NPSMailTemplateParser = compile(NPSTemplateContent);
 	}
 
-	private async sendSurveyAndSaveAnswer(survey: Survey, user: User): Promise<Answers> {
-		let answer = new Answers(survey.id, user.id);
+	private async sendSurveyAndSaveAnswer(survey: Survey, user: User): Promise<Answer> {
+		let answer = new Answer(survey.id, user.id);
 		const userName = `${user.firstName} ${user.lastName}`;
 
 		const body = this.NPSMailTemplateParser({
@@ -85,7 +85,7 @@ export class SendSurveysToUsersUseCase {
 		return answer;
 	}
 
-	public async execute(data: SendSurveysToUsersRequestDTO): Promise<Answers[]> {
+	public async execute(data: SendSurveysToUsersRequestDTO): Promise<Answer[]> {
 		const survey = await this.surveyRepository.findOne(data.surveyId);
 		if (!survey) {
 			throw new NotFoundException(

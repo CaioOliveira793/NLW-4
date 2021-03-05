@@ -4,7 +4,7 @@ import { Survey } from "./Survey.entity";
 import { User } from "./User.entity";
 
 @Entity('answers')
-export class Answers {
+export class Answer {
 	constructor(
 		surveyId: string,
 		userId: string,

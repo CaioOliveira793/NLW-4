@@ -1,5 +1,5 @@
 import { Connection, Repository } from 'typeorm';
-import { Answer } from 'src/entities/Answers.entity';
+import { Answer } from '../entities/Answers.entity';
 import { providers } from '../constants';
 
 export const answerRepository = {

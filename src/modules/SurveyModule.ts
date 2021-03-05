@@ -2,19 +2,19 @@ import { Module } from '@nestjs/common';
 
 import { DatabaseModule } from './DatabaseModule';
 
-import { SurveyController } from 'src/controllers/survey/SurveyController';
+import { SurveyController } from '../controllers/survey/SurveyController';
 
-import { surveyRepository } from 'src/repositories/SurveyRepository';
-import { userRepository } from 'src/repositories/UserRepository';
-import { answerRepository } from 'src/repositories/AnswerRepository';
+import { surveyRepository } from '../repositories/SurveyRepository';
+import { userRepository } from '../repositories/UserRepository';
+import { answerRepository } from '../repositories/AnswerRepository';
 
-import { CreateSurveyUseCase } from 'src/useCases/createSurvey/CreateSurveyUseCase';
-import { ListSurveysUseCase } from 'src/useCases/listSurveys/ListSurveysUseCase';
-import { SendSurveysToUsersUseCase } from 'src/useCases/sendSurveysToUsers/SentSurveysToUsersUseCase';
+import { CreateSurveyUseCase } from '../useCases/createSurvey/CreateSurveyUseCase';
+import { ListSurveysUseCase } from '../useCases/listSurveys/ListSurveysUseCase';
+import { SendSurveysToUsersUseCase } from '../useCases/sendSurveysToUsers/SentSurveysToUsersUseCase';
 
-import { NodeMailerFakeMailService } from 'src/services/mail/NodeMailerFakeMailService';
+import { NodeMailerFakeMailService } from '../services/mail/NodeMailerFakeMailService';
 
-import { globalExceptionFilterProvider } from 'src/exceptions/filters/GlobalExceptionFilter';
+import { globalExceptionFilterProvider } from '../exceptions/filters/GlobalExceptionFilter';
 
 
 @Module({

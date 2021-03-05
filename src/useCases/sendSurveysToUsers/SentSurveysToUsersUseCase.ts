@@ -68,17 +68,17 @@ export class SendSurveysToUsersUseCase {
 			body
 		});
 
-		const alreadyCreatedSurveyUser = await this.answerRepository.findOne({
+		const alreadyCreatedAnswer = await this.answerRepository.findOne({
 			where: {
 				userId: answer.userId,
 				surveyId: answer.surveyId,
 			}
 		});
 
-		if (!alreadyCreatedSurveyUser) {
+		if (!alreadyCreatedAnswer) {
 			await this.answerRepository.insert(answer);
 		} else {
-			answer = alreadyCreatedSurveyUser;
+			answer = alreadyCreatedAnswer;
 		}
 		answer.user = user;
 		answer.survey = survey;
@@ -98,15 +98,9 @@ export class SendSurveysToUsersUseCase {
 			select: ['id', 'firstName', 'lastName', 'email'],
 		});
 
-		const answer = await Promise.all(users.map((user) => {
-			if (!user.id) {
-				throw new NotFoundException(
-					`User with id ${data.surveyId} does not exists`,
-					`User with id ${data.surveyId} does not exists, try to send the survey to an existing users`
-				);
-			}
-			return this.sendSurveyAndSaveAnswer(survey, user);
-		}));
+		const answer = await Promise.all(users.map((user) =>
+			this.sendSurveyAndSaveAnswer(survey, user)
+		));
 
 		return answer;
 	}

@@ -97,20 +97,18 @@ describe('SurveyController', () => {
 	});
 
 	it('return listed surveys', async () => {
+		const surveyId = '3deb6801-ee55-4121-a13a-db808702388b';
 		const userIds = [
 			'88abaf5c-2b3e-48a0-ae5e-74ec9b8dd00e',
 			'ac9de291-9816-464c-9088-afdad99d2e32',
 			'9b2a3eba-37cc-4d47-a025-c28b0fb7f058',
 			'03d38f79-96a6-4186-8111-3e214f981516'
 		];
-		const answers = await surveyController.sendSurvey({
-			surveyId: '3deb6801-ee55-4121-a13a-db808702388b',
-			userIds
-		});
+		const answers = await surveyController.sendSurvey({ surveyId, userIds });
 
 		expect(answers.length).toBe(4);
 		answers.forEach((answer, index) => {
-			expect(answer.surveyId).toBe('3deb6801-ee55-4121-a13a-db808702388b');
+			expect(answer.surveyId).toBe(surveyId);
 			expect(answer.userId).toBe(userIds[index]);
 			expect(answer).toHaveProperty('id');
 			expect(answer).toHaveProperty('createdAt');

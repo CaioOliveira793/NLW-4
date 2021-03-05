@@ -2,9 +2,9 @@ import { Inject, Injectable } from "@nestjs/common";
 import { Between, Repository } from "typeorm";
 import { Answer } from "../../entities/Answers.entity";
 import { providers } from "../../constants";
-import { Survey } from "src/entities/Survey.entity";
-import { NotFoundException } from "src/exceptions/resource/NotFountException";
-import { ConflictException } from "src/exceptions/resource/ConflictException";
+import { Survey } from "../../entities/Survey.entity";
+import { NotFoundException } from "../../exceptions/resource/NotFountException";
+import { ConflictException } from "../../exceptions/resource/ConflictException";
 
 
 export interface CalculateNPSRequestDTO {

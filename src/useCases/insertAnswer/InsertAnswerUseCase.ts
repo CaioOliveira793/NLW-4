@@ -2,9 +2,9 @@ import { Inject, Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { Answer } from "../../entities/Answers.entity";
 import { providers } from "../../constants";
-import { NotFoundException } from "src/exceptions/resource/NotFountException";
-import { UnauthorizedException } from "src/exceptions/permission/UnauthorizedException";
-import { MalformatedException } from "src/exceptions/resource/MalformatedException";
+import { NotFoundException } from "../../exceptions/resource/NotFountException";
+import { UnauthorizedException } from "../../exceptions/permission/UnauthorizedException";
+import { MalformatedException } from "../../exceptions/resource/MalformatedException";
 
 
 export interface InsertAnswerRequestDTO {

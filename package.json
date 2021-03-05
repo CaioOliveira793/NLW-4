@@ -75,6 +75,10 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/src/database/migrations"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }

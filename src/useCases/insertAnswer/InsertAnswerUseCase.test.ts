@@ -42,7 +42,7 @@ describe('InsertAnswerUseCase', () => {
 	});
 
 
-	it('insert a value in ansert', async () => {
+	it('insert a value in answer', async () => {
 		const answer = await insertAnswerUseCase.execute({
 			answerId,
 			token: userId,

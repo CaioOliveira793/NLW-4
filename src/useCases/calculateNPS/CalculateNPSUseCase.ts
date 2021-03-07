@@ -35,9 +35,7 @@ export class CalculateNPSUseCase {
 		});
 
 		if (!sendedSurvey) {
-			const createdSurvey = await this.surveyRepository.findOne({
-				where: { id: surveyId }
-			});
+			const createdSurvey = await this.surveyRepository.findOne(surveyId);
 
 			if (!createdSurvey) {
 				throw new NotFoundException(

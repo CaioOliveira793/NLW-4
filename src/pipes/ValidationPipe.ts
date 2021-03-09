@@ -1,16 +1,17 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
-import { ObjectSchema } from 'joi';
+
+import { ValidationSchema } from '../validation/ValidationSchema';
 import { MalformatedException } from '../exceptions/resource/MalformatedException';
 
 
 @Injectable()
-export class JoiValidationPipe implements PipeTransform {
+export class ValidationPipe implements PipeTransform {
 	constructor(
-		private readonly validationSchema: ObjectSchema,
+		private readonly validationSchema: ValidationSchema<unknown>,
 	) {}
 
 	transform(value: unknown): unknown {
-		const { error } = this.validationSchema.validate(value, { abortEarly: false });
+		const error = this.validationSchema.validate(value);
 
 		if (error) {
 			throw new MalformatedException('Data validation error', error);

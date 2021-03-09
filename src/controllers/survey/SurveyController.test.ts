@@ -85,7 +85,7 @@ describe('SurveyController', () => {
 		const surveys = await surveyController.listSurveys({
 			title: 'Other survey title',
 			description: 'description ...'
-		});
+		}, {});
 
 		expect(surveys.length).toBe(2);
 		surveys.forEach(survey => {

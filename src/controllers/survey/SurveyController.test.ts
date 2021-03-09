@@ -4,7 +4,7 @@ import { SurveyController } from './SurveyController';
 import { CreateSurveyUseCase, CreateSurveyRequestDTO } from "../../useCases/createSurvey/CreateSurveyUseCase";
 import { ListSurveysUseCase, ListSurveysRequestDTO } from "../../useCases/listSurveys/ListSurveysUseCase";
 import { SendSurveysToUsersUseCase, SendSurveysToUsersRequestDTO
-} from "../../useCases/sendSurveysToUsers/SentSurveysToUsersUseCase";
+} from "../../useCases/sendSurveysToUsers/SendSurveysToUsersUseCase";
 
 import { Survey } from '../../entities/Survey.entity';
 import { Answer } from '../../entities/Answers.entity';

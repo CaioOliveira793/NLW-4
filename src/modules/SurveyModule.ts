@@ -10,7 +10,7 @@ import { answerRepository } from '../repositories/AnswerRepository';
 
 import { CreateSurveyUseCase } from '../useCases/createSurvey/CreateSurveyUseCase';
 import { ListSurveysUseCase } from '../useCases/listSurveys/ListSurveysUseCase';
-import { SendSurveysToUsersUseCase } from '../useCases/sendSurveysToUsers/SentSurveysToUsersUseCase';
+import { SendSurveysToUsersUseCase } from '../useCases/sendSurveysToUsers/SendSurveysToUsersUseCase';
 
 import { NodeMailerFakeMailService } from '../services/mail/NodeMailerFakeMailService';
 

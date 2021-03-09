@@ -1,6 +1,6 @@
 import { TestingModule, Test } from '@nestjs/testing';
 
-import { SendSurveysToUsersUseCase } from './SentSurveysToUsersUseCase';
+import { SendSurveysToUsersUseCase } from './SendSurveysToUsersUseCase';
 
 import { providers } from '../../constants';
 import { NodeMailerFakeMailService } from '../../services/mail/NodeMailerFakeMailService';

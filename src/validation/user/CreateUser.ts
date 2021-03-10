@@ -13,7 +13,7 @@ const joiSchema = Joi.object<CreateUserBody>({
 
 export const createUserBodySchema: ValidationSchema<CreateUserBody> = {
 	validate(data: CreateUserBody): ValidationError | void {
-		const { error } = joiSchema.validate(data);
-		return error;
+		const { error } = joiSchema.validate(data, { abortEarly: false });
+		return error?.details;
 	}
 }

@@ -13,7 +13,7 @@ const createAnswerQueryJoiSchema = Joi.object<CreateAnsewerQuery>({
 
 export const createAnswerQuerySchema: ValidationSchema<CreateAnsewerQuery> = {
 	validate(data: CreateAnsewerQuery): ValidationError | void {
-		const { error } = createAnswerQueryJoiSchema.validate(data);
-		return error;
+		const { error } = createAnswerQueryJoiSchema.validate(data, { abortEarly: false });
+		return error?.details;
 	}
 }

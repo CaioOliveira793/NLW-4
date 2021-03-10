@@ -13,7 +13,7 @@ const createSurveyBodyJoiSchema = Joi.object<CreateSurveyBody>({
 
 export const createSurveyBodySchema: ValidationSchema<CreateSurveyBody> = {
 	validate(data: CreateSurveyBody): ValidationError | void {
-		const { error } = createSurveyBodyJoiSchema.validate(data);
-		return error;
+		const { error } = createSurveyBodyJoiSchema.validate(data, { abortEarly: false });
+		return error?.details;
 	}
 }

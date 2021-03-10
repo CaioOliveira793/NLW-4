@@ -1,6 +1,6 @@
-import { ValidationError as JoiValidationError } from 'joi';
+import { ValidationErrorItem } from 'joi';
 
-export type ValidationError = JoiValidationError;
+export type ValidationError = ValidationErrorItem[];
 
 export interface ValidationSchema<T> {
 	validate(data: T): ValidationError | void;

@@ -13,9 +13,9 @@ export class AlreadyExistsException implements AppException {
 
 	public getHTTPException(): HttpException {
 		return new HttpException({
-			status: HttpStatus.BAD_REQUEST,
+			status: HttpStatus.CONFLICT,
 			message: this.message,
 			details: this.details,
-		}, HttpStatus.BAD_REQUEST);
+		}, HttpStatus.CONFLICT);
 	}
 }

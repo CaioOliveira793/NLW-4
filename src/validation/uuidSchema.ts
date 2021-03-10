@@ -4,7 +4,7 @@ import { uuid } from './JoiSchemas';
 
 export const uuidSchema: ValidationSchema<string> = {
 	validate(data: string): ValidationError | void {
-		const { error } = uuid.validate(data);
-		return error;
+		const { error } = uuid.validate(data, { abortEarly: false });
+		return error?.details;
 	}
 }

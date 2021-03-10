@@ -43,6 +43,6 @@ export const Answer = {
 	answer: Joi
 		.number()
 		.integer()
-		.min(1)
+		.min(0)
 		.max(10)
 }

@@ -1,0 +1,26 @@
+*
+
+!src
+!nest-cli.json
+!ormconfig.js
+!tsconfig*.json
+!package*.json
+!yarn.lock
+!LICENSE
+
+*.log
+*.sqlite
+
+# # folders:
+# .git
+# .docker
+# coverage
+# dist
+# node_modules
+# test
+
+# # files:
+# .eslintrc.js
+# .gitignore
+# .dockerignore
+# readme.md

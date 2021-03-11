@@ -10,15 +10,15 @@ services:
       POSTGRES_DB: development_db
       PGDATA: /var/lib/postgresql/data
     volumes:
-      - ./postgres/data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
   nodeapi_service:
     build:
-      context: ./../
+      context: .
       target: development
-      dockerfile: ./.docker/node/dockerfile
+      dockerfile: ./dockerfile
     command: yarn start:dev
     depends_on:
       - postgresdb_service
@@ -30,7 +30,13 @@ services:
       POSTGRES_USER: postgres-user
       POSTGRES_PASSWORD: postgres-dev-pass
       POSTGRES_DB: development_db
+      URL_MAIL: http://localhost:3000/answers
     volumes:
-      - ./../src:/usr/src/app/src
+      - ./src:/home/node/api/src
+      - node_modules:/home/node/api/node_modules
     ports:
       - 3000:3000
+
+volumes:
+  node_modules:
+  postgres_data:

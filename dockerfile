@@ -33,7 +33,7 @@ ARG USER=api
 
 WORKDIR /home/node/api
 
-RUN apk --no-cache add shadow && \
+RUN apk --no-cache --quiet add shadow && \
 	groupadd $GROUP && \
 	useradd --no-log-init --home /home/node --gid $GROUP $USER && \
 	chown -R $USER:$GROUP /home/node && \
@@ -41,7 +41,7 @@ RUN apk --no-cache add shadow && \
 
 USER $USER:$GROUP
 
-COPY --chown=$USER:$GROUP ./* ./
+COPY --chown=$USER:$GROUP ./ ./
 
 RUN yarn install --prod --silent && \
 	yarn cache clean

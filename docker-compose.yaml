@@ -29,7 +29,7 @@ services:
       POSTGRES_PORT: 5432
       POSTGRES_USER: postgres-user
       POSTGRES_PASSWORD: postgres-dev-pass
-      POSTGRES_DB: development_db
+      POSTGRES_DATABASE: development_db
       URL_MAIL: http://localhost:3000/answers
     volumes:
       - ./src:/home/node/api/src

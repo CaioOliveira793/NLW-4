@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post, Query, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Query, UseFilters } from '@nestjs/common';
 import { Survey } from '../../entities/Survey.entity';
 import { Answer } from '../../entities/Answers.entity';
 
@@ -7,10 +7,11 @@ import { ListSurveysUseCase } from '../../useCases/listSurveys/ListSurveysUseCas
 import { SendSurveysToUsersUseCase } from '../../useCases/sendSurveysToUsers/SendSurveysToUsersUseCase';
 
 import { createSurveyBodySchema } from '../../validation/survey/CreateSurvey';
-import { listSurveysBodySchema, listSurveysQuerySchema } from '../../validation/survey/ListSurvey';
+import { listSurveysQuerySchema } from '../../validation/survey/ListSurvey';
 import { sendSurveyBodySchema } from '../../validation/survey/SendSurvey';
 import { ValidationPipe } from '../../pipes/ValidationPipe';
 import { DefaultExceptionFilter } from '../../exceptions/filters/ExceptionFilter';
+import { uuidSchema } from '../../validation/uuidSchema';
 
 
 export interface CreateSurveyBody {
@@ -19,20 +20,14 @@ export interface CreateSurveyBody {
 }
 
 
-export interface ListSurveysBody {
-	title?: string,
-	description?: string,
-}
-
 export interface ListSurveysQuery {
+	title?: string;
+	des?: string;
 	page?: number;
 }
 
 
-export interface SendSurveyBody {
-	surveyId: string;
-	userIds: string[];
-}
+export type SendSurveyBody = string[];
 
 
 @UseFilters(DefaultExceptionFilter)
@@ -54,19 +49,23 @@ export class SurveyController {
 
 	@Get()
 	async listSurveys(
-		@Body(new ValidationPipe(listSurveysBodySchema)) data: ListSurveysBody,
 		@Query(new ValidationPipe(listSurveysQuerySchema)) query: ListSurveysQuery,
 	): Promise<Survey[]> {
 		return await this.listSurveyUseCase.execute({
-			...data,
+			description: query.des,
+			title: query.title,
 			page: query.page
 		});
 	}
 
-	@Post('/send')
+	@Post('/:id/send')
 	async sendSurvey(
-		@Body(new ValidationPipe(sendSurveyBodySchema)) data: SendSurveyBody,
+		@Param('id', new ValidationPipe(uuidSchema)) surveyId: string,
+		@Body(new ValidationPipe(sendSurveyBodySchema)) userIds: SendSurveyBody,
 	): Promise<Answer[]> {
-		return await this.sendSurveysToUsersUseCase.execute(data);
+		return await this.sendSurveysToUsersUseCase.execute({
+			surveyId,
+			userIds
+		});
 	}
 }

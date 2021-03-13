@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, Param, Post, Query, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, UseFilters } from '@nestjs/common';
 
 import { Answer } from '../../entities/Answers.entity';
 import { InsertAnswerUseCase } from '../../useCases/insertAnswer/InsertAnswerUseCase';
@@ -10,9 +10,9 @@ import { ValidationPipe } from '../../pipes/ValidationPipe';
 import { DefaultExceptionFilter } from '../../exceptions/filters/ExceptionFilter';
 
 
-export interface CreateAnsewerQuery {
-	tk: string;
-	v: number;
+export interface CreateAnsewerBody {
+	token: string;
+	value: number;
 }
 
 
@@ -24,20 +24,19 @@ export class AnswerController {
 		private readonly calculateNPSUseCase: CalculateNPSUseCase,
 	) {}
 
-	@Post(':id')
-	@HttpCode(201)
-	async createAnswer(
+	@Put(':id')
+	async respondAnswer(
 		@Param('id', new ValidationPipe(uuidSchema)) id: string,
-		@Query(new ValidationPipe(createAnswerQuerySchema)) query: CreateAnsewerQuery
+		@Body(new ValidationPipe(createAnswerQuerySchema)) body: CreateAnsewerBody
 	): Promise<Answer> {
 		return await this.createAnswerUseCase.execute({
 			answerId: id,
-			token: query.tk,
-			value: query.v,
+			token: body.token,
+			value: body.value,
 		});
 	}
 
-	@Get('/nps/:id')
+	@Get(':id/nps')
 	async calculateNPS(
 		@Param('id', new ValidationPipe(uuidSchema)) id: string
 	): Promise<CalculateNPSResponseDTO> {

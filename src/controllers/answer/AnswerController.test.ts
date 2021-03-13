@@ -57,7 +57,7 @@ describe('AnswerController', () => {
 
 	it('save the user answer value', async () => {
 		const userId = '1b157e63-4cda-4b51-819d-b135012cd514';
-		const answer = await answerController.createAnswer(answerId, { v: 9, tk: userId });
+		const answer = await answerController.respondAnswer(answerId, { value: 9, token: userId });
 
 		expect(answer.id).toBe(answerId);
 		expect(answer.surveyId).toBe(surveyId);

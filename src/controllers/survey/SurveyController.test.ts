@@ -84,8 +84,8 @@ describe('SurveyController', () => {
 	it('return listed surveys', async () => {
 		const surveys = await surveyController.listSurveys({
 			title: 'Other survey title',
-			description: 'description ...'
-		}, {});
+			des: 'description ...'
+		});
 
 		expect(surveys.length).toBe(2);
 		surveys.forEach(survey => {
@@ -96,7 +96,7 @@ describe('SurveyController', () => {
 		});
 	});
 
-	it('return listed surveys', async () => {
+	it('send survey to users', async () => {
 		const surveyId = '3deb6801-ee55-4121-a13a-db808702388b';
 		const userIds = [
 			'88abaf5c-2b3e-48a0-ae5e-74ec9b8dd00e',
@@ -104,7 +104,7 @@ describe('SurveyController', () => {
 			'9b2a3eba-37cc-4d47-a025-c28b0fb7f058',
 			'03d38f79-96a6-4186-8111-3e214f981516'
 		];
-		const answers = await surveyController.sendSurvey({ surveyId, userIds });
+		const answers = await surveyController.sendSurvey(surveyId, userIds);
 
 		expect(answers.length).toBe(4);
 		answers.forEach((answer, index) => {

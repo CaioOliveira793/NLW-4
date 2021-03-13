@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
+import { Controller, Get, HttpCode, Param, Post, Query, UseFilters } from '@nestjs/common';
 
 import { Answer } from '../../entities/Answers.entity';
 import { InsertAnswerUseCase } from '../../useCases/insertAnswer/InsertAnswerUseCase';
@@ -7,6 +7,7 @@ import { CalculateNPSUseCase, CalculateNPSResponseDTO } from '../../useCases/cal
 import { uuidSchema } from '../../validation/uuidSchema';
 import { createAnswerQuerySchema } from '../../validation/answer/CreateAnswer';
 import { ValidationPipe } from '../../pipes/ValidationPipe';
+import { DefaultExceptionFilter } from '../../exceptions/filters/ExceptionFilter';
 
 
 export interface CreateAnsewerQuery {
@@ -15,6 +16,7 @@ export interface CreateAnsewerQuery {
 }
 
 
+@UseFilters(DefaultExceptionFilter)
 @Controller('/answers')
 export class AnswerController {
 	constructor(

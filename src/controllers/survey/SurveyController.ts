@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Query, UseFilters } from '@nestjs/common';
 import { Survey } from '../../entities/Survey.entity';
 import { Answer } from '../../entities/Answers.entity';
 
@@ -10,6 +10,7 @@ import { createSurveyBodySchema } from '../../validation/survey/CreateSurvey';
 import { listSurveysBodySchema, listSurveysQuerySchema } from '../../validation/survey/ListSurvey';
 import { sendSurveyBodySchema } from '../../validation/survey/SendSurvey';
 import { ValidationPipe } from '../../pipes/ValidationPipe';
+import { DefaultExceptionFilter } from '../../exceptions/filters/ExceptionFilter';
 
 
 export interface CreateSurveyBody {
@@ -34,6 +35,7 @@ export interface SendSurveyBody {
 }
 
 
+@UseFilters(DefaultExceptionFilter)
 @Controller('/surveys')
 export class SurveyController {
 	constructor(

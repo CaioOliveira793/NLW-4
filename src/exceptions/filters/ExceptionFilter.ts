@@ -1,10 +1,9 @@
 import { ArgumentsHost, ExceptionFilter, HttpStatus } from "@nestjs/common";
-import { APP_FILTER } from '@nestjs/core';
 import { Request, Response } from 'express';
 import { AppException } from "../ExceptionsInterface";
 
 
-export class GlobalExceptionFilter implements ExceptionFilter<unknown> {
+export class DefaultExceptionFilter implements ExceptionFilter<unknown> {
 	public catch(exception: AppException | Record<string, unknown>, host: ArgumentsHost): void {
 		const ctx = host.switchToHttp();
 		const response = ctx.getResponse<Response>();
@@ -33,8 +32,3 @@ export class GlobalExceptionFilter implements ExceptionFilter<unknown> {
 	}
 	
 }
-
-export const globalExceptionFilterProvider = {
-	provide: APP_FILTER,
-	useClass: GlobalExceptionFilter
-};

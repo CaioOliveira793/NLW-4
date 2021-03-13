@@ -6,7 +6,6 @@ import { AnswerController } from 'src/controllers/answer/AnswerController';
 import { answerRepository } from 'src/repositories/AnswerRepository';
 
 
-import { globalExceptionFilterProvider } from 'src/exceptions/filters/GlobalExceptionFilter';
 import { InsertAnswerUseCase } from 'src/useCases/insertAnswer/InsertAnswerUseCase';
 import { CalculateNPSUseCase } from 'src/useCases/calculateNPS/CalculateNPSUseCase';
 import { surveyRepository } from 'src/repositories/SurveyRepository';
@@ -19,8 +18,7 @@ import { surveyRepository } from 'src/repositories/SurveyRepository';
 		surveyRepository,
 		answerRepository,
 		InsertAnswerUseCase,
-		CalculateNPSUseCase,
-		globalExceptionFilterProvider
+		CalculateNPSUseCase
 	],
 	exports: [answerRepository]
 })

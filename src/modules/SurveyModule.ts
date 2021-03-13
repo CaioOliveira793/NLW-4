@@ -14,8 +14,6 @@ import { SendSurveysToUsersUseCase } from '../useCases/sendSurveysToUsers/SendSu
 
 import { NodeMailerFakeMailService } from '../services/mail/NodeMailerFakeMailService';
 
-import { globalExceptionFilterProvider } from '../exceptions/filters/GlobalExceptionFilter';
-
 
 @Module({
 	imports: [DatabaseModule],
@@ -27,8 +25,7 @@ import { globalExceptionFilterProvider } from '../exceptions/filters/GlobalExcep
 		CreateSurveyUseCase,
 		ListSurveysUseCase,
 		SendSurveysToUsersUseCase,
-		NodeMailerFakeMailService,
-		globalExceptionFilterProvider
+		NodeMailerFakeMailService
 	],
 	exports: [surveyRepository]
 })

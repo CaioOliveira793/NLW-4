@@ -1,10 +1,11 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UseFilters } from '@nestjs/common';
 
 import { User } from '../../entities/User.entity';
 import { CreateUserUseCase } from '../../useCases/createUser/CreateUserUseCase';
 
 import { createUserBodySchema } from '../../validation/user/CreateUser';
 import { ValidationPipe } from '../../pipes/ValidationPipe';
+import { DefaultExceptionFilter } from '../../exceptions/filters/ExceptionFilter';
 
 
 export interface CreateUserBody {
@@ -14,6 +15,7 @@ export interface CreateUserBody {
 }
 
 
+@UseFilters(DefaultExceptionFilter)
 @Controller('/users')
 export class UserController {
 	constructor(

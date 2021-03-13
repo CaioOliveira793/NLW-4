@@ -1,8 +1,12 @@
 {
   "name": "nlw-4",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Aplicação desenvolvida na NLW 4",
+  "author": "Caio Oliveira",
+  "keywords": [
+    "NLW 4",
+    "API REST"
+  ],
   "private": true,
   "license": "MIT",
   "scripts": {

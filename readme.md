@@ -21,12 +21,21 @@ Antes de começar, você vai precisar ter instalado as seguintes ferramentas:
 - [Git](https://git-scm.com)
 - [Node.js](https://nodejs.org/en/)
 - [Docker](https://www.docker.com/)
+- [docker-compose](https://docs.docker.com/compose/)
+
+### Testando
+
+Com estas ferramentas instaladas, basta executar o seguinte comando.
 
 ```bash
-docker-compose -f .docker/docker-compose.yaml up -d
+docker-compose up -d
 ```
 
 O docker irá criar imagens do node e postgres, criar seus containers e rodar o banco de dados e a aplicação em modo de desenvolvimento na porta 3000.
+
+### Documentação
+
+Confira a documentação [aqui](./docs/documentation.md)
 
 ## Tecnologias utilizadas
 
@@ -37,6 +46,7 @@ As tecnologias utilizadas foram:
 - Nest.js
 - Typeorm
 - Nodemailer
+- Yup
 - Jest
 
 # Licença

@@ -14,8 +14,9 @@ RUN apk --no-cache add shadow && \
 
 USER $USER:$GROUP
 
-COPY --chown=$USER:$GROUP ./ ./
+COPY --chown=$USER:$GROUP package*.json yarn.lock ./
 RUN yarn install
+COPY --chown=$USER:$GROUP ./ ./
 
 CMD yarn start:dev
 

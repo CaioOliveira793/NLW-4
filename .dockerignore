@@ -2,7 +2,6 @@
 
 !src
 !nest-cli.json
-!ormconfig.js
 !tsconfig*.json
 !package*.json
 !yarn.lock

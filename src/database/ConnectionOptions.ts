@@ -1,3 +1,5 @@
+import { ConnectionOptions } from "typeorm";
+
 const cli = {
 	entitiesDir: './src/entities',
 	migrationsDir: './src/database/migrations',
@@ -12,13 +14,13 @@ const commonDevelopmentConfig = {
 	logging: true,
 	synchronize: false,
 	entities: [
-		'./dist/src/entities/**/*.entity{.ts,.js}'
+		'./dist/entities/**/*.entity{.ts,.js}'
 	],
 	entitySchemas: [
-		'./dist/src/schemas/**/*.schema{.ts,.js}'
+		'./dist/schemas/**/*.schema{.ts,.js}'
 	],
 	migrations: [
-		'./dist/src/database/migrations/*'
+		'./dist/database/migrations/*'
 	],
 	cli
 };
@@ -73,23 +75,23 @@ const dockerDevelopmentConfig = {
 const productionConfig = {
 	name: 'production',
 	type: 'postgres',
-	host: process.env.POSTGRES_HOST,
-	port: process.env.POSTGRES_PORT,
-	username: process.env.POSTGRES_USER,
-	password: process.env.POSTGRES_PASSWORD,
-	database: process.env.POSTGRES_DATABASE,
+	host: process.env.POSTGRES_HOST ?? 'my-host',
+	port: process.env.POSTGRES_PORT ?? 5432,
+	username: process.env.POSTGRES_USER ?? 'postgress',
+	password: process.env.POSTGRES_PASSWORD ?? 'password-post',
+	database: process.env.POSTGRES_DATABASE ?? 'main_database',
 	migrationsRun: false,
 	synchronize: false,
 	dropSchema: false,
 	logging: false,
 	entities: [
-		'./dist/src/entities/**/*.entity{.ts,.js}'
+		'./dist/entities/**/*.entity{.ts,.js}'
 	],
 	entitySchemas: [
-		'./dist/src/schemas/**/*.schema{.ts,.js}'
+		'./dist/schemas/**/*.schema{.ts,.js}'
 	],
 	migrations: [
-		'./dist/src/database/migrations/*'
+		'./dist/database/migrations/*'
 	],
 	cli: {
 		entitiesDir: './src/entities',
@@ -121,4 +123,6 @@ switch (process.env.NODE_ENV) {
 		exportedConfig = developmentConfig;
 }
 
-module.exports = exportedConfig;
+console.log(exportedConfig);
+
+export default exportedConfig as ConnectionOptions;

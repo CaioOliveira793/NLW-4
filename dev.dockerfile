@@ -44,9 +44,8 @@ USER $USER:$GROUP
 
 COPY --chown=$USER:$GROUP ./ ./
 
-RUN yarn install --prod --silent && \
+RUN yarn install --silent && \
+	yarn build && \
 	yarn cache clean
-
-RUN yarn build
 
 CMD yarn start:prod

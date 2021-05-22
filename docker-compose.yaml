@@ -18,7 +18,7 @@ services:
     build:
       context: .
       target: development
-      dockerfile: ./dockerfile
+      dockerfile: ./dev.dockerfile
     command: yarn start:dev
     depends_on:
       - postgresdb_service

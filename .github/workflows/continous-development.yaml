@@ -1,0 +1,39 @@
+name: CD
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  cd:
+    name: Lint, test and build on Node ${{ matrix.node-version }}
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Use Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          install-command: yarn --silent
+
+      - name: Check commit messages
+        uses: wagoid/commitlint-github-action@v2
+
+      - name: Build
+        run: yarn build
+
+      - name: Test
+        run: yarn test --ci --maxWorkers=2

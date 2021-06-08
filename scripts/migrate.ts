@@ -9,4 +9,4 @@ async function migrate(): Promise<void> {
 	await connection.close();
 }
 
-migrate();
+migrate().catch(err => { console.error(err) });

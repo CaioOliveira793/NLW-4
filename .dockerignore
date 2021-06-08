@@ -1,25 +1,13 @@
+# ignore all files by default
 *
 
+# permitted folders:
 !src
+!scripts
+
+# permitted files:
 !nest-cli.json
 !tsconfig*.json
 !package*.json
 !yarn.lock
 !LICENSE
-
-*.log
-*.sqlite
-
-# # folders:
-# .git
-# .docker
-# coverage
-# dist
-# node_modules
-# test
-
-# # files:
-# .eslintrc.js
-# .gitignore
-# .dockerignore
-# readme.md

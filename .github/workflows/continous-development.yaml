@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
         with:
-          install-command: yarn --silent
+          install-command: yarn install --silent
 
       - name: Check commit messages
         uses: wagoid/commitlint-github-action@v2
